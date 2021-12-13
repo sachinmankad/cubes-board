@@ -1,0 +1,147 @@
+// from libs
+@use '../../../node_modules/@angular/material/index' as mat; // Theming APIs
+@use 'sass:map';
+
+// from project
+@use 'theming'; // color config function
+@use '../components.style' as components; // @mixin with custom components
+
+@include mat.core(); // Mixin that renders all of the core styles that are not theme-dependent.
+
+// just colors
+$light-primary-text: white;
+$dark-primary-text: rgba(black, 0.87);
+$purple-primary-text: rgba(199, 91, 57, 0.87);
+$purple-secondary-text: rgba(199, 91, 57, 0.54);
+$purple-disabled-text: rgba(199, 91, 57, 0.38);
+$purple-dividers: rgba(199, 91, 57, 0.12);
+$purple-disabled-button: rgba(199, 91, 57, 0.12);
+$purple-focused: rgba(199, 91, 57, 0.12);
+
+// Custom pallet
+//
+// A palette is a collection of colors representing a portion of color space.
+// Each value in this collection is called a hue. In Material Design, each hues in a palette has an identifier number.
+// These identifier numbers include 50, and then each 100 value between 100 and 900.
+// The numbers order hues within a palette from lightest to darkest. See @angular\material\core\theming
+//
+// You can create your own palette by defining a Sass map that matches the structure described in the Palettes section above.
+// The map must define hues for 50 and each hundred between 100 and 900.
+// The map must also define a contrast map with contrast colors for each hue.
+// You can use the Material Design palette tool to help choose the hues in your palette.
+// https://material.io/resources/color
+
+$my-purple-palette: (
+    50: #f3e5f5,
+    100: #e1bee7,
+    200: #ce93d8,
+    300: #ba68c8,
+    400: #ab47bc,
+    500: #9c27b0,
+    600: #8e24aa,
+    700: #7b1fa2,
+    800: #6a1b9a,
+    900: #4a148c,
+    A100: #ea80fc,
+    A200: #e040fb,
+    A400: #d500f9,
+    A700: #aa00ff,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $dark-primary-text,
+        600: $dark-primary-text,
+        700: $dark-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $dark-primary-text,
+        A400: $dark-primary-text,
+        A700: black
+    )
+);
+
+// Background palette for purple themes.
+$purple-theme-background-palette: (
+    status-bar: map.get($my-purple-palette, 300),
+    hover: rgba(black, 0.04),
+    card: map.get($my-purple-palette, 50),
+    dialog: map.get($my-purple-palette, 50),
+    disabled-button: rgba(black, 0.12),
+    raised-button: map.get($my-purple-palette, 50),
+    focused-button: $purple-focused,
+    selected-button: map.get($my-purple-palette, 300),
+    selected-disabled-button: map.get($my-purple-palette, 400),
+    disabled-button-toggle: map.get($my-purple-palette, 200),
+    unselected-chip: map.get($my-purple-palette, 300),
+    disabled-list-option: map.get($my-purple-palette, 200),
+    tooltip: map.get($my-purple-palette, 700),
+    // hear you can add your own keys and use it in _components
+    highlighted-text: map.get($my-purple-palette, 200)
+);
+
+// Foreground palette for purple themes.
+$purple-theme-foreground-palette: (
+    base: black,
+    divider: $purple-dividers,
+    dividers: $purple-dividers,
+    disabled: $purple-disabled-text,
+    disabled-button: $purple-disabled-button,
+    disabled-text: $purple-disabled-text,
+    elevation: black,
+    hint-text: $purple-disabled-text,
+    secondary-text: $purple-secondary-text,
+    icon: rgba(black, 0.54),
+    icons: rgba(black, 0.54),
+    text: $purple-primary-text,
+    slider-min: rgba(black, 0.87),
+    slider-off: rgba(black, 0.26),
+    slider-off-active: rgba(black, 0.38),
+    // hear you can add your own keys and use it in _components
+);
+
+// Define an purple theme
+// main colors
+$purple-primary: mat.define-palette($my-purple-palette);
+$purple-accent: mat.define-palette(mat.$brown-palette);
+$purple-warn: mat.define-palette(mat.$red-palette);
+
+// color config function
+$purple-color-config: theming.mat-create-color-config(
+    // see src/styles/custom-themes/_theming.scss
+    $purple-primary,
+    $purple-accent,
+    $purple-warn,
+    false,
+    $purple-theme-foreground-palette,
+    $purple-theme-background-palette
+);
+
+// Start from Material 12 you can customize every standard material component
+
+// Define custom color scheme for buttons in purple theme
+$button-primary: mat.define-palette(mat.$light-blue-palette);
+$button-accent: mat.define-palette(mat.$deep-purple-palette);
+$button-warn: mat.define-palette(mat.$purple-palette);
+
+// buttons color config
+$button-color-config: theming.mat-create-color-config(
+    $button-primary,
+    $button-accent,
+    $button-warn,
+    false,
+    $purple-theme-foreground-palette,
+    $purple-theme-background-palette
+);
+
+// Add our custom themes' color config in all-component-themes
+@include mat.all-component-themes($purple-color-config);
+
+//  Emit styles for MatButton based on `$button-color-config`
+@include mat.button-color($button-color-config);
+
+// Add @mixin from our ../components.style
+@include components.theme($purple-color-config);

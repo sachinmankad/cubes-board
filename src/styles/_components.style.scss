@@ -1,0 +1,8 @@
+@use '../app/app.style' as body;
+// @use '../app/demo/components/cards-example/card.style' as card-example;
+
+// Styles for the components that are based on the current theme.
+@mixin theme($theme) {
+    @include body.theme($theme);
+    // @include card-example.theme($theme);
+}

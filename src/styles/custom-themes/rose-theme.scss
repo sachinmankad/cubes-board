@@ -1,0 +1,147 @@
+// from libs
+@use '../../../node_modules/@angular/material/index' as mat; // Theming APIs
+@use 'sass:map';
+
+// from project
+@use 'theming'; // color config function
+@use '../components.style' as components; // @mixin with custom components
+
+@include mat.core(); // Mixin that renders all of the core styles that are not theme-dependent.
+
+// just colors
+$light-primary-text: white;
+$dark-primary-text: rgba(black, 0.87);
+$rose-primary-text: rgba(199, 91, 57, 0.87);
+$rose-secondary-text: rgba(199, 91, 57, 0.54);
+$rose-disabled-text: rgba(199, 91, 57, 0.38);
+$rose-dividers: rgba(199, 91, 57, 0.12);
+$rose-disabled-button: rgba(199, 91, 57, 0.12);
+$rose-focused: rgba(199, 91, 57, 0.12);
+
+// Custom pallet
+//
+// A palette is a collection of colors representing a portion of color space.
+// Each value in this collection is called a hue. In Material Design, each hues in a palette has an identifier number.
+// These identifier numbers include 50, and then each 100 value between 100 and 900.
+// The numbers order hues within a palette from lightest to darkest. See @angular\material\core\theming
+//
+// You can create your own palette by defining a Sass map that matches the structure described in the Palettes section above.
+// The map must define hues for 50 and each hundred between 100 and 900.
+// The map must also define a contrast map with contrast colors for each hue.
+// You can use the Material Design palette tool to help choose the hues in your palette.
+// https://material.io/resources/color
+
+$my-rose-palette: (
+    50: #fce4ec,
+    100: #f8bbd0,
+    200: #f48fb1,
+    300: #f06292,
+    400: #ec407a,
+    500: #e91e63,
+    600: #d81b60,
+    700: #c2185b,
+    800: #ad1457,
+    900: #880e4f,
+    A100: #ff80ab,
+    A200: #ff4081,
+    A400: #f50057,
+    A700: #c51162,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $dark-primary-text,
+        600: $dark-primary-text,
+        700: $dark-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $dark-primary-text,
+        A400: $dark-primary-text,
+        A700: black
+    )
+);
+
+// Background palette for rose themes.
+$rose-theme-background-palette: (
+    status-bar: map.get($my-rose-palette, 300),
+    hover: rgba(black, 0.04),
+    card: map.get($my-rose-palette, 50),
+    dialog: map.get($my-rose-palette, 50),
+    disabled-button: rgba(black, 0.12),
+    raised-button: map.get($my-rose-palette, 50),
+    focused-button: $rose-focused,
+    selected-button: map.get($my-rose-palette, 300),
+    selected-disabled-button: map.get($my-rose-palette, 400),
+    disabled-button-toggle: map.get($my-rose-palette, 200),
+    unselected-chip: map.get($my-rose-palette, 300),
+    disabled-list-option: map.get($my-rose-palette, 200),
+    tooltip: map.get($my-rose-palette, 700),
+    // hear you can add your own keys and use it in _components
+    highlighted-text: map.get(mat.$pink-palette, 200)
+);
+
+// Foreground palette for rose themes.
+$rose-theme-foreground-palette: (
+    base: black,
+    divider: $rose-dividers,
+    dividers: $rose-dividers,
+    disabled: $rose-disabled-text,
+    disabled-button: $rose-disabled-button,
+    disabled-text: $rose-disabled-text,
+    elevation: black,
+    hint-text: $rose-disabled-text,
+    secondary-text: $rose-secondary-text,
+    icon: rgba(black, 0.54),
+    icons: rgba(black, 0.54),
+    text: $rose-primary-text,
+    slider-min: rgba(black, 0.87),
+    slider-off: rgba(black, 0.26),
+    slider-off-active: rgba(black, 0.38),
+    // hear you can add your own keys and use it in _components
+);
+
+// Define an rose theme
+// main colors
+$rose-primary: mat.define-palette($my-rose-palette);
+$rose-accent: mat.define-palette(mat.$brown-palette);
+$rose-warn: mat.define-palette(mat.$red-palette);
+
+// color config function
+$rose-color-config: theming.mat-create-color-config(
+    // see src/styles/custom-themes/_theming.scss
+    $rose-primary,
+    $rose-accent,
+    $rose-warn,
+    false,
+    $rose-theme-foreground-palette,
+    $rose-theme-background-palette
+);
+
+// Start from Material 12 you can customize every standard material component
+
+// Define custom color scheme for buttons in rose theme
+$button-primary: mat.define-palette(mat.$light-blue-palette);
+$button-accent: mat.define-palette(mat.$deep-purple-palette);
+$button-warn: mat.define-palette(mat.$purple-palette);
+
+// buttons color config
+$button-color-config: theming.mat-create-color-config(
+    $button-primary,
+    $button-accent,
+    $button-warn,
+    false,
+    $rose-theme-foreground-palette,
+    $rose-theme-background-palette
+);
+
+// Add our custom themes' color config in all-component-themes
+@include mat.all-component-themes($rose-color-config);
+
+//  Emit styles for MatButton based on `$button-color-config`
+@include mat.button-color($button-color-config);
+
+// Add @mixin from our ../components.style
+@include components.theme($rose-color-config);

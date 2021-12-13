@@ -1,1 +1,68 @@
-/* You can add global styles to this file, and also import other style files */
+// @import '~bootstrap/dist/css/bootstrap.css';
+@use '@angular/material' as mat;
+@use 'styles/components.style' as components;
+@use 'styles/custom-themes/light-theme' as light-theme;
+@import 'styles/reset';
+
+// Define the default light theme.
+$color-config: light-theme.$light-color-config;
+
+// $my-custom-level: mat.define-typography-level(
+//     $font-family: 'Source Sans Pro, sans-serif',
+//     $font-weight: 400,
+//     $font-size: 1rem,
+//     $line-height: 1,
+//     $letter-spacing: normal
+// );
+
+$my-custom-typography: mat.define-typography-config(
+    $font-family: 'Source Sans Pro, sans-serif',
+    $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+    $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+    $display-2: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+    $display-1: mat.define-typography-level(34px, 40px, 400),
+    $headline: mat.define-typography-level(24px, 32px, 400)
+);
+
+// @include angular-material-typography($my-custom-level);
+// Include material core styles.
+@include mat.core($my-custom-typography);
+
+@include mat.all-component-themes($color-config);
+@include components.theme($color-config);
+
+.mat-typography {
+    // @include angular-material-typography($zeus-typography);
+}
+
+//OLDER STYLES
+// html,
+// body {
+//     height: 100%;
+// }
+// body {
+//     margin: 0;
+//     font-family: Roboto, 'Helvetica Neue', sans-serif;
+// }
+
+// .border-red {
+//     border: 1px solid red;
+// }
+// .border-blue {
+//     border: 1px solid blue;
+// }
+// .border-cyan {
+//     border: 1px solid cyan;
+// }
+// .border-green {
+//     border: 1px solid green;
+// }
+// .border-yellow {
+//     border: 1px solid yellow;
+// }
+// .border-brown {
+//     border: 1px solid brown;
+// }
+// .border-green-yellow {
+//     border: 1px solid greenyellow;
+// }

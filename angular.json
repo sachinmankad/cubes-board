@@ -31,7 +31,39 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              {
+                "input": "node_modules/bootstrap/scss/bootstrap.scss",
+                "inject": true
+              },
+              {
+                "input": "src/styles.scss",
+                "inject": true
+              },
+              {
+                "input": "src/styles/custom-themes/dark-theme.scss",
+                "bundleName": "dark-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/custom-themes/light-theme.scss",
+                "bundleName": "light-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/custom-themes/orange-theme.scss",
+                "bundleName": "orange-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/custom-themes/rose-theme.scss",
+                "bundleName": "rose-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/custom-themes/purple-theme.scss",
+                "bundleName": "purple-theme",
+                "inject": false
+              }
             ],
             "scripts": []
           },
